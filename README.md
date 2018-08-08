@@ -1,2 +1,3 @@
 # O2O
-SSM
+## 1.Maven创建的 WebApp hello World工程
+[Demo](demo/)
