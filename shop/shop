@@ -1,0 +1,148 @@
+DROP TABLE IF EXISTS `tb_person_info`;
+CREATE TABLE `tb_person_info`
+(
+`user_id` INT ( 10 ) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+`name` VARCHAR ( 32 ) DEFAULT NULL COMMENT '用户姓名',
+`profile_img` VARCHAR ( 1024 ) DEFAULT NULL COMMENT '用户头像',
+`email` VARCHAR ( 1024 ) DEFAULT NULL COMMENT '用户电子邮箱',
+`gender` VARCHAR ( 2 ) DEFAULT NULL COMMENT '用户性别',
+`enable_status` INT ( 2 ) NOT NULL DEFAULT '0' COMMENT '0:禁止使用本商城 1:允许使用本商城',
+`user_type` INT ( 2 ) NOT NULL DEFAULT '1' COMMENT '1:顾客 2:店家 3:超级管理员',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`update_time` DATETIME DEFAULT NULL COMMENT '最近一次更新时间',
+PRIMARY KEY ( `user_id` )
+)ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='用户信息表';
+
+DROP TABLE IF EXISTS `tb_area`;
+CREATE TABLE `tb_area`
+(
+`area_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '区域ID',
+`area_name` VARCHAR(200) NOT NULL COMMENT '区域名称',
+`priority` INT(2) NOT NULL DEFAULT '0' COMMENT '权重',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`updta_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+PRIMARY KEY ( `area_id` ),
+UNIQUE KEY `UK_AREA_NAME` ( `area_name` )
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='区域表';
+
+DROP TABLE IF EXISTS `tb_wechat_auth`;
+CREATE TABLE `tb_wechat_auth`
+(
+`wechat_atuh_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '微信账户ID',
+`user_id` INT(10) NOT NULL COMMENT '用户ID',
+`openId` VARCHAR(1024) NOT NULL COMMENT '微信用户openId',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+PRIMARY KEY ( `wechat_atuh_id` ),
+CONSTRAINT `FK_WECHATAUTH_PROFILE` FOREIGN KEY( `user_id` ) REFERENCES `tb_person_info`( `user_id` )
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='微信用户信息表';
+
+DROP TABLE IF EXISTS `tb_local_auth`;
+CREATE TABLE `tb_local_auth`
+(
+`local_auth_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '本地账户ID',
+`user_id` INT(10) NOT NULL COMMENT '用户ID',
+`user_name` VARCHAR(128) NOT NULL COMMENT '用户名',
+`password` VARCHAR(128) NOT NULL COMMENT '用户密码',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+PRIMARY KEY(`local_auth_id`),
+UNIQUE KEY `UK_USER_NAME` (`user_name`),
+CONSTRAINT `FK_LOCALAUTH_PROFILE` FOREIGN KEY( `user_id` ) REFERENCES `tb_person_info`( `user_id` )
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='本地用户信息表';
+
+DROP TABLE IF EXISTS `tb_head_line`;
+CREATE TABLE `tb_head_line`
+(
+`line_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '头条ID',
+`line_name` VARCHAR(1000) DEFAULT NULL COMMENT '头条名称',
+`line_link` VARCHAR(2000) NOT NULL COMMENT '头条连接',
+`line_img` VARCHAR(2000) NOT NULL COMMENT '头条图片',
+`priority` INT(2) NOT NULL DEFAULT '0' COMMENT '权重',
+`enable_status` INT(2) NOT NULL DEFAULT '0' COMMENT '使能状态',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+PRIMARY KEY ( `line_id` )
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='头条数据表';
+
+DROP TABLE IF EXISTS `tb_shop_category`;
+CREATE TABLE `tb_shop_category`
+(
+`shop_category_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '店铺类别ID',
+`shop_category_name` VARCHAR(1000) DEFAULT NULL COMMENT '店铺类别名称',
+`shop_category_desc` VARCHAR(2000) NOT NULL COMMENT '头条连接',
+`shop_category_img` VARCHAR(2000) NOT NULL COMMENT '头条图片',
+`priority` INT(2) NOT NULL DEFAULT '0' COMMENT '权重',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+`parent_id` INT(10) DEFAULT NULL,
+PRIMARY KEY ( `shop_category_id` ),
+CONSTRAINT `FK_SHOP_CATEGORY_SELF` FOREIGN KEY (`parent_id`) REFERENCES `tb_shop_category` (`shop_category_id`)
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='店铺类别';
+
+DROP TABLE IF EXISTS `tb_shop`;
+CREATE TABLE `tb_shop`
+(
+`shop_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '店铺ID',
+`owner_id` INT(10) NOT NULL COMMENT '店铺所有者ID',
+`area_id` INT(10) NOT NULL COMMENT '店铺所属区域ID',
+`shop_category_id` INT(10) NOT NULL COMMENT '店铺类型ID',
+`shop_name` VARCHAR(256) NOT NULL COMMENT '店铺名称',
+`shop_desc` VARCHAR(1024) DEFAULT NULL COMMENT '店铺备注',
+`shop_addr` VARCHAR(200) DEFAULT NULL COMMENT '店铺地址',
+`phone` VARCHAR(128) DEFAULT NULL COMMENT '联系电话',
+`shop_img` VARCHAR(1024) DEFAULT NULL COMMENT '店铺图片',
+`priority` INT(3) DEFAULT '0' COMMENT '店铺权重',
+`create_time` DATETIME DEFAULT NULL COMMENT '店铺创建时间',
+`update_time` DATETIME DEFAULT NULL COMMENT '店铺最近一次修改时间',
+`enable_status` INT(2) NOT NULL DEFAULT '0' COMMENT '店铺状态',
+`advice` VARCHAR(255) DEFAULT NULL,
+PRIMARY KEY(`shop_id`),
+CONSTRAINT `FK_SHOP_AREA` FOREIGN KEY(`area_id`) REFERENCES `tb_area` (`area_id`),
+CONSTRAINT `FK_SHOP_PROFILE` FOREIGN KEY(`owner_id`) REFERENCES `tb_person_info` (`user_id`),
+CONSTRAINT `FK_SHOP_SHOPCATE` FOREIGN KEY(`shop_category_id`) REFERENCES `tb_shop_category` (`shop_category_id`)
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='店铺信息';
+
+DROP TABLE IF EXISTS `tb_product_category`;
+CREATE TABLE `tb_product_category`
+(
+`product_category_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '商品类别ID',
+`product_category_name` VARCHAR(100) NOT NULL COMMENT '商品类别名称',
+`priority` INT(2) DEFAULT '0' COMMENT '商品权重',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`shop_id` INT(10) NOT NULL COMMENT '店铺ID',
+PRIMARY KEY (`product_category_id`),
+CONSTRAINT `FK_PRICATE_SHOP` FOREIGN KEY (`shop_id`) REFERENCES `tb_shop` (`shop_id`)
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='商品类别';
+
+DROP TABLE IF EXISTS `tb_product`;
+CREATE TABLE `tb_product`
+(
+`product_id` INT(100) NOT NULL AUTO_INCREMENT COMMENT '商品ID',
+`product_name` VARCHAR(100) NOT NULL COMMENT '商品名称',
+`product_desc` VARCHAR(2000) DEFAULT NULL COMMENT '商品简介',
+`img_addr` VARCHAR(2000) DEFAULT '' COMMENT '商品图片地址',
+`normal_price` VARCHAR(100) DEFAULT NULL COMMENT '标准价格',
+`promotion_price` VARCHAR(100) DEFAULT NULL COMMENT '优惠价格',
+`priority` INT(2) DEFAULT '0' COMMENT '权重',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+`enable_status` INT(2) NOT NULL DEFAULT '0' COMMENT '使用状态',
+`product_categroy_id` INT(11) DEFAULT NULL COMMENT '产品类型ID',
+`shop_id` INT(10) NOT NULL DEFAULT '0' COMMENT '店铺编号',
+PRIMARY KEY (`PRODUCT_ID`),
+CONSTRAINT `FK_PRODUCT_PROCATE` FOREIGN KEY (`product_categroy_id`) REFERENCES `tb_product_category` (`product_category_id`),
+CONSTRAINT `FK_PRODUCT_SHOP` FOREIGN KEY (`shop_id`) REFERENCES `tb_shop` (`shop_id`)
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='商品信息表';
+
+DROP TABLE IF EXISTS `tb_product_img`;
+CREATE TABLE `tb_product_img`
+(
+`product_img_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '商品图片ID',
+`img_addr` VARCHAR(2000) NOT NULL COMMENT '商品图片地址',
+`img_desc` VARCHAR(2000) DEFAULT '0' COMMENT '商品图片说明',
+`priority` INT(2) DEFAULT '0' COMMENT '权重',
+`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+`product_id` INT(20) NOT NULL COMMENT '商品ID',
+PRIMARY KEY (`product_img_id`),
+CONSTRAINT `FK_PROIMG_PRODUCT` FOREIGN KEY (`product_id`) REFERENCES `tb_product` (`product_id`)
+)ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='商品图片';

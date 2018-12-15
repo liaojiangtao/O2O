@@ -5,10 +5,11 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Area {
-    private Integer areaId;
-    private String areaName;
+public class ProductImg {
+    private Long productImgId;
+    private String imgAddr;
+    private String imgDesc;
     private Integer priority;
     private Date createTime;
-    private Date updateTime;
+    private Long productId;
 }

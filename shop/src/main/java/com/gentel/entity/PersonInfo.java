@@ -5,14 +5,14 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PersionInfo {
+public class PersonInfo {
     private Long userId;
     private String name;
-    private String protfileImg;
+    private String profileImg;
     private String email;
     private String gender;
     private Integer enableStatus;
     private Integer userType;
-    private Data creatTime;
+    private Data createTime;
     private Data updateTime;
 }
