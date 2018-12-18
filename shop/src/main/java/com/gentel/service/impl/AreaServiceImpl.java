@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gentel.dao.AreaDao;
 import com.gentel.entity.Area;
+import com.gentel.exceptions.AreaOperationException;
 import com.gentel.service.AreaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,6 @@ public class AreaServiceImpl implements AreaService {
             log.error(e.getMessage());
             throw new AreaOperationException(e.getMessage());
         }
-        return null;
+        return areaList;
     }
 }
