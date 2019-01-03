@@ -23,4 +23,10 @@ public class ShopExecution {
         this.state = stateEnum.getState();
         this.stateInfo = stateEnum.getStateInfo();
     }
+
+    public ShopExecution(ShopStateEnum stateEnum, Shop shop){
+        this.state = stateEnum.getState();
+        this.stateInfo = stateEnum.getStateInfo();
+        this.shop = shop;
+    }
 }

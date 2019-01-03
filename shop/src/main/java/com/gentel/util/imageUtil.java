@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Random;
 
 @Slf4j
-public class imageUtil {
+public class ImageUtil {
     private static String basePath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
     private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static final Random r = new Random();

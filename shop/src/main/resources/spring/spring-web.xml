@@ -24,7 +24,7 @@
     <!--3.定义视图解析器-->
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/html"></property>
+        <property name="prefix" value="/WEB-INF/html/"></property>
         <property name="suffix" value=".html"></property>
     </bean>
 
@@ -32,5 +32,28 @@
     <context:component-scan base-package="com.gentel.web"/>
 
     <!--5.权限拦截器-->
-
+    <mvc:interceptors>
+        <!--校验是否登录了店家管理系统的拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/shopadmin/**"/>
+            <bean id="ShopInterceptor"
+                  class="com.gentel.interceptor.shopadmin.ShopLoginInterceptor"/>
+        </mvc:interceptor>
+        <!--校验是否对改店铺有操作权限的拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/shopadmin/**"/>
+            <!--shoplist page-->
+            <mvc:exclude-mapping path="/shopadmin/shoplist"/>
+            <mvc:exclude-mapping path="/shopadmin/getshoplist"/>
+            <!--shopregister page-->
+            <mvc:exclude-mapping path="/shopadmin/getshopinitinfo"/>
+            <mvc:exclude-mapping path="/shopadmin/registershop"/>
+            <mvc:exclude-mapping path="/shopadmin/shopoperation"/>
+            <!--shopmanage page-->
+            <mvc:exclude-mapping path="/shopadmin/shopmanagement"/>
+            <mvc:exclude-mapping path="/shopadmin/getshopmanagementinfo"/>
+            <bean id="ShopPermissionInterceptor"
+                  class="com.gentel.interceptor.shopadmin.ShopPermissionInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
