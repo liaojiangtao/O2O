@@ -59,6 +59,11 @@ public class ShopServiceImpl implements ShopService {
         return new ShopExecution(ShopStateEnum.CHECK, shop);
     }
 
+    @Override
+    public Shop getByShopId(Long shopId) {
+        return shopDao.queryByShopId(shopId);
+    }
+
     private void addShopImg(Shop shop, ImageHolder thumbnail) {
         //获取shop图片目录的相对路径
         String dest = PathUtil.getShopImgPath(shop.getShopId());
