@@ -148,7 +148,7 @@ public class ImageUtil {
      *
      * @param storePath
      * */
-    private static void deleteFileOrFath(String storePath) {
+    public static void deleteFileOrFath(String storePath) {
         File fileOrPath = new File(PathUtil.getImgBasePath() + storePath);
         if (fileOrPath.exists()) {
             if (fileOrPath.isDirectory()) {

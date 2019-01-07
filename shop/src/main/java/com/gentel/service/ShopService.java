@@ -9,4 +9,10 @@ public interface ShopService {
 
     /*添加店铺*/
     ShopExecution addShop(Shop shop, ImageHolder thumbnail) throws ShopOperationException;
+
+    /*通过店铺ID查询店铺信息*/
+    Shop getByShopId(long shopId);
+
+    /*更新店铺信息 包括对图片的处理*/
+    ShopExecution modifyShop(Shop shop, ImageHolder thumbnail) throws ShopOperationException;
 }
