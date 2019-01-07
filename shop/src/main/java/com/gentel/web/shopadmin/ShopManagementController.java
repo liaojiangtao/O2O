@@ -49,7 +49,7 @@ public class ShopManagementController {
         if (!CodeUtil.checkVerifyCode(request)) {
             modeMap.put("success", false);
             modeMap.put("errMsg", "输入了错误的验证码");
-            return modeMap;
+//            return modeMap;
         }
 
         //1.接收并转化相应的参数，包括店铺信息以及图片信息
@@ -104,9 +104,9 @@ public class ShopManagementController {
                 modeMap.put("errMsg", e.getMessage());
             }
             return modeMap;
-        } else {
-            modeMap.put("success", false);
-            modeMap.put("errMsg", "请输入店铺信息");
+        }else{
+            modeMap.put("success",false);
+            modeMap.put("errMsg","请输入店铺信息");
             return modeMap;
         }
     }
@@ -127,30 +127,6 @@ public class ShopManagementController {
         } catch (Exception e) {
             modeMap.put("succsee", false);
             modeMap.put("errmsg", e.getMessage());
-        }
-
-        return modeMap;
-    }
-
-    @RequestMapping(value = "getshopbyid", method = RequestMethod.GET)
-    @ResponseBody
-    private Map<String, Object> getByShopId(HttpServletRequest request) {
-        Map<String, Object> modeMap = new HashMap<String, Object>();
-        Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
-        if (shopId > -1) {
-            try {
-                Shop shop = shopService.getByShopId(shopId);
-                List<Area> areaList = areaService.getAreaList();
-                modeMap.put("shop", shop);
-                modeMap.put("areaList", areaList);
-                modeMap.put("success", true);
-            }catch (Exception e){
-                modeMap.put("success", false);
-                modeMap.put("errMsg",e.toString());
-            }
-        }else{
-            modeMap.put("success", false);
-            modeMap.put("errMsg", "empty shopId");
         }
 
         return modeMap;
