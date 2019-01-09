@@ -13,6 +13,6 @@ public class PersonInfo {
     private String gender;
     private Integer enableStatus;
     private Integer userType;
-    private Data createTime;
-    private Data updateTime;
+    private Date createTime;
+    private Date updateTime;
 }

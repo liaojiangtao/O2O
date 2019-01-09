@@ -16,20 +16,23 @@
         <result column="update_time" property="updateTime"/>
         <result column="enable_status" property="enableStatus"/>
         <result column="advice" property="advice"/>
+
         <association property="area" column="area_id"
                      javaType="com.gentel.entity.Area">
             <id column="area_id" property="areaId"/>
             <result column="area_name" property="areaName"/>
         </association>
-        <association property="shopCategory" column="shop_category_id"
-                     javaType="com.gentel.entity.ShopCategory">
-            <id column="shop_category_id" property="shopCategoryId"/>
-            <result column="shop_category_name" property="shopCategoryName"/>
-        </association>
+
         <association property="owner" column="user_id"
                      javaType="com.gentel.entity.PersonInfo">
             <id column="user_id" property="userId"/>
             <result column="name" property="name"/>
+        </association>
+
+        <association property="shopCategory" column="shop_category_id"
+                     javaType="com.gentel.entity.ShopCategory">
+            <id column="shop_category_id" property="shopCategoryId"/>
+            <result column="shop_category_name" property="shopCategoryName"/>
         </association>
     </resultMap>
 

@@ -49,7 +49,7 @@ public class ShopManagementController {
         if (!CodeUtil.checkVerifyCode(request)) {
             modeMap.put("success", false);
             modeMap.put("errMsg", "输入了错误的验证码");
-//            return modeMap;
+            return modeMap;
         }
 
         //1.接收并转化相应的参数，包括店铺信息以及图片信息
