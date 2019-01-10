@@ -19,6 +19,10 @@ public class ShopExecution {
     //shop列表（查询店铺列表的时候用到）
     private List<Shop> shopList;
 
+    public ShopExecution() {
+
+    }
+
     public ShopExecution(ShopStateEnum stateEnum){
         this.state = stateEnum.getState();
         this.stateInfo = stateEnum.getStateInfo();
